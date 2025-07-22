@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { FloatingElements } from "./FloatingElements";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background */}
@@ -21,7 +24,7 @@ const Hero = () => {
           <h1 className="text-hero gradient-text mb-6">
             Build Beautiful Apps
             <br />
-            <span className="text-white">Instantly</span>
+            <span className="text-white">with CoDexa</span>
           </h1>
         </motion.div>
         
@@ -39,13 +42,16 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex justify-center items-center"
         >
-          <Button variant="primary" size="xl" className="hover-lift">
-            Start Building Free
-          </Button>
-          <Button variant="glass" size="xl" className="hover-lift">
-            Watch Demo
+          <Button 
+            variant="primary" 
+            size="xl" 
+            className="hover-lift group relative overflow-hidden"
+            onClick={() => navigate('/builder')}
+          >
+            <span className="relative z-10">Start Building Free</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Button>
         </motion.div>
         

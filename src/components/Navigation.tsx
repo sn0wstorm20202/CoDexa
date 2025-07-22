@@ -1,18 +1,25 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { ChatCircle } from "phosphor-react";
+import { useNavigate } from "react-router-dom";
+import { useUIStore } from "@/store/uiStore";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
+  const { setScrolled } = useUIStore();
   
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const scrolled = window.scrollY > 50;
+      setIsScrolled(scrolled);
+      setScrolled(scrolled);
     };
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [setScrolled]);
   
   return (
     <motion.nav
@@ -27,7 +34,7 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <div className="text-2xl font-bold gradient-text">
-            Lovable Clone
+            CoDexa
           </div>
           
           <div className="hidden md:flex items-center gap-6">
@@ -50,7 +57,16 @@ const Navigation = () => {
           <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
             Sign In
           </Button>
-          <Button variant="primary" size="sm">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => navigate('/builder')}
+            className="glass border-primary/20 hover:border-primary/40 hidden md:inline-flex"
+          >
+            <ChatCircle size={16} className="mr-2" />
+            Chat Now
+          </Button>
+          <Button variant="primary" size="sm" onClick={() => navigate('/builder')}>
             Get Started
           </Button>
         </div>

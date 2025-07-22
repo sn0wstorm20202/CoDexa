@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
+import { useUIStore } from "@/store/uiStore";
+import { useNavigate } from "react-router-dom";
 
 const pricingPlans = [
   {
@@ -60,6 +62,8 @@ const pricingPlans = [
 
 const Pricing = () => {
   const [isAnnual, setIsAnnual] = useState(false);
+  const { selectedPlan, setSelectedPlan } = useUIStore();
+  const navigate = useNavigate();
   
   return (
     <section className="py-24 px-6">
@@ -117,16 +121,19 @@ const Pricing = () => {
               className={`relative ${plan.popular ? 'md:-mt-4' : ''}`}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                  <div className="bg-gradient-to-r from-primary to-accent text-white px-4 py-1 rounded-full text-sm font-medium shadow-lg">
                     Most Popular
                   </div>
                 </div>
               )}
               
-              <Card className={`glass p-8 h-full relative overflow-hidden ${
-                plan.popular ? 'border-primary shadow-lg shadow-primary/20' : ''
-              }`}>
+              <Card 
+                className={`glass p-8 h-full relative overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                  plan.popular ? 'border-primary shadow-lg shadow-primary/20' : 'hover:border-primary/30'
+                } ${selectedPlan === plan.name ? 'border-primary shadow-xl shadow-primary/30' : ''}`}
+                onClick={() => setSelectedPlan(plan.name)}
+              >
                 <div className={`absolute inset-0 bg-gradient-to-br ${plan.gradient} opacity-5`} />
                 
                 <div className="relative z-10">
@@ -160,6 +167,15 @@ const Pricing = () => {
                     variant={plan.popular ? "primary" : "outline"} 
                     size="lg" 
                     className="w-full hover-lift"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (plan.name === "Enterprise") {
+                        // Handle enterprise contact
+                        navigate('/builder');
+                      } else {
+                        navigate('/builder');
+                      }
+                    }}
                   >
                     {plan.cta}
                   </Button>
