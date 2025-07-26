@@ -87,14 +87,15 @@ const Builder = () => {
             />
 
             {/* Hidden Inputs */}
-            <Input
+            <input
               ref={fileInputRef}
               type="file"
               multiple
               hidden
+              
               onChange={handleFileChange}
             />
-            <Input
+            <input
               ref={imageInputRef}
               type="file"
               accept="image/*"
