@@ -17,7 +17,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="text-2xl font-bold gradient-text mb-4">
-              Lovable Clone
+              CoDexa
             </div>
             <p className="text-muted-foreground mb-6 max-w-sm">
               The fastest way to build beautiful web applications with AI. 
@@ -58,7 +58,7 @@ const Footer = () => {
         
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} Lovable Clone. All rights reserved.
+            © {currentYear} CoDexa. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
