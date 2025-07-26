@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Paperclip, Microphone, Image, ArrowUp } from "phosphor-react";
 import { Button } from "@/components/ui/button";
 import { useUIStore } from "@/store/uiStore";
+import { Input } from "@/components/ui/input";
 
 const Builder = () => {
   const [input, setInput] = useState("");
@@ -16,6 +17,32 @@ const Builder = () => {
     "Generate a CRM",
     "Build a mobile app"
   ];
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      console.log("Selected files:", files);
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      console.log("Selected images:", files);
+    }
+  };
+
+  const handleMicAccess = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log("Microphone access granted", stream);
+    } catch (error) {
+      console.error("Microphone access denied:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
@@ -34,7 +61,7 @@ const Builder = () => {
         >
           What do you want to build?
         </motion.h1>
-        
+
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -58,24 +85,57 @@ const Builder = () => {
               placeholder="Type your idea and we'll bring it to life (or /command)"
               className="w-full h-32 bg-transparent border-none outline-none resize-none text-lg placeholder:text-muted-foreground pr-16"
             />
-            
+
+            {/* Hidden Inputs */}
+            <Input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              hidden
+              onChange={handleFileChange}
+            />
+            <Input
+              ref={imageInputRef}
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={handleImageChange}
+            />
+
             {/* Input Actions */}
             <div className="absolute bottom-4 left-0 right-0 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Button variant="ghost" size="sm" className="p-2 h-auto">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="p-2 h-auto"
+                  onClick={() => fileInputRef.current?.click()}
+                >
                   <Paperclip size={18} />
                 </Button>
-                <Button variant="ghost" size="sm" className="p-2 h-auto">
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="p-2 h-auto"
+                  onClick={handleMicAccess}
+                >
                   <Microphone size={18} />
                 </Button>
-                <Button variant="ghost" size="sm" className="p-2 h-auto">
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="p-2 h-auto"
+                  onClick={() => imageInputRef.current?.click()}
+                >
                   <Image size={18} />
                 </Button>
               </div>
-              
-              <Button 
-                variant="primary" 
-                size="sm" 
+
+              <Button
+                variant="primary"
+                size="sm"
                 className="rounded-full p-2 h-auto"
                 disabled={!input.trim()}
               >
